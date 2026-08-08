@@ -28,14 +28,14 @@ Route::middleware(['auth', 'role:operasional'])->group(function () {
 | 2. LOGIN TERPISAH
 |--------------------------------------------------------------------------
 */
-Route::get('/login/admin', [CustomAuthController::class, 'showAdminLogin'])->name('login.admin');
+Route::get('/', [CustomAuthController::class, 'showAdminLogin'])->name('login.admin');
 Route::post('/login/admin', [CustomAuthController::class, 'loginAdmin']);
 
 Route::get('/login/pimpinan', [CustomAuthController::class, 'showPimpinanLogin'])->name('login.pimpinan');
 Route::post('/login/pimpinan', [CustomAuthController::class, 'loginPimpinan']);
 
-Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
-Route::get('/dashboard', [AdminController::class, 'dashboard']);
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
 
 Route::middleware(['auth', 'role:admin,pimpinan,operasional'])->group(function () {
     Route::resource('peti-kemas', PetiKemasController::class);
