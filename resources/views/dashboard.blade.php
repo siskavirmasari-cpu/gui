@@ -145,7 +145,7 @@
                         </p>
 
                         <h3 class="text-3xl font-bold text-gray-800 mt-2">
-                            248
+                            {{ $totalPetiKemas ?? 248 }}
                         </h3>
 
                         <p class="text-xs text-green-600 mt-2 font-medium">
@@ -195,7 +195,7 @@
                         </p>
 
                         <h3 class="text-3xl font-bold text-gray-800 mt-2">
-                            126
+                            {{ $totalTrip ?? 126 }}
                         </h3>
 
                         <p class="text-xs text-green-600 mt-2 font-medium">
@@ -227,11 +227,7 @@
                 </div>
 
             </div>
-
-
-
             <!-- DOKUMEN -->
-
             <div class="bg-white rounded-2xl p-5
                         border border-gray-100
                         shadow-sm hover:shadow-lg
@@ -246,11 +242,11 @@
                         </p>
 
                         <h3 class="text-3xl font-bold text-gray-800 mt-2">
-                            184
+                            {{ $totalDokumen ?? 184 }}
                         </h3>
 
                         <p class="text-xs text-orange-600 mt-2 font-medium">
-                            17 perlu diperiksa
+                            {{ $dokumenPerluPeriksa ?? 17 }} perlu diperiksa
                         </p>
 
                     </div>
@@ -296,11 +292,11 @@
                         </p>
 
                         <h3 class="text-3xl font-bold text-gray-800 mt-2">
-                            24
+                            {{ $totalUsers ?? 24 }}
                         </h3>
 
                         <p class="text-xs text-purple-600 mt-2 font-medium">
-                            3 role pengguna
+                            {{ $rolesCount ?? 3 }} role pengguna
                         </p>
 
                     </div>
@@ -380,47 +376,14 @@
 
                 <div class="dashboard-chart-shell rounded-2xl border border-indigo-100 p-4">
 
-                    <div class="relative h-64 overflow-hidden rounded-xl border border-indigo-100/70 bg-white/70">
-
-                        <svg viewBox="0 0 360 220" class="h-full w-full">
-                            <g stroke="#e5e7eb" stroke-width="1">
-                                <line x1="20" y1="190" x2="340" y2="190"></line>
-                                <line x1="20" y1="150" x2="340" y2="150"></line>
-                                <line x1="20" y1="110" x2="340" y2="110"></line>
-                                <line x1="20" y1="70" x2="340" y2="70"></line>
-                            </g>
-
-                            <path d="M20 168 C60 152, 90 138, 120 142 S190 170, 220 154 S290 98, 320 92 S340 82, 340 82"
-                                  fill="none"
-                                  stroke="#4f46e5"
-                                  stroke-width="4"
-                                  stroke-linecap="round"></path>
-
-                            <path d="M20 154 C60 140, 90 124, 120 128 S190 158, 220 144 S290 108, 320 102 S340 96, 340 96"
-                                  fill="none"
-                                  stroke="#34d399"
-                                  stroke-width="4"
-                                  stroke-linecap="round"></path>
-
-                            <circle cx="120" cy="142" r="5" fill="#4f46e5"></circle>
-                            <circle cx="220" cy="154" r="5" fill="#4f46e5"></circle>
-                            <circle cx="320" cy="92" r="5" fill="#4f46e5"></circle>
-
-                            <circle cx="120" cy="128" r="5" fill="#34d399"></circle>
-                            <circle cx="220" cy="144" r="5" fill="#34d399"></circle>
-                            <circle cx="320" cy="102" r="5" fill="#34d399"></circle>
-                        </svg>
-
+                    <div class="relative h-64 overflow-hidden rounded-xl border border-indigo-100/70 bg-white/70 flex items-center justify-center">
+                        <canvas id="opsChart" class="h-full w-full"></canvas>
                     </div>
 
                     <div class="mt-4 grid grid-cols-7 text-center text-[11px] font-semibold uppercase tracking-wide text-gray-400">
-                        <span>Sen</span>
-                        <span>Sel</span>
-                        <span>Rab</span>
-                        <span>Kam</span>
-                        <span>Jum</span>
-                        <span>Sab</span>
-                        <span>Min</span>
+                        @foreach (($labels ?? ['Sen','Sel','Rab','Kam','Jum','Sab','Min']) as $lab)
+                            <span>{{ $lab }}</span>
+                        @endforeach
                     </div>
 
                     <div class="mt-4 flex flex-wrap justify-center gap-4 text-xs text-gray-500">
@@ -462,23 +425,16 @@
 
                     <div class="relative w-40 h-40">
 
-                        <div class="dashboard-status-ring w-40 h-40 rounded-full flex items-center justify-center">
-
-                            <div class="w-28 h-28
-                                        rounded-full bg-white
-                                        flex flex-col
-                                        items-center justify-center">
-
-                                <span class="text-3xl font-bold text-gray-800">
-                                    184
-                                </span>
-
-                                <span class="text-xs text-gray-400">
-                                    Dokumen
-                                </span>
-
+                        <div class="flex items-center justify-center">
+                            <div class="relative w-40 h-40">
+                                <canvas id="dokumenDonut" class="w-40 h-40"></canvas>
+                                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                    <div class="text-center">
+                                        <div class="text-3xl font-bold text-gray-800">{{ $totalDokumen ?? 0 }}</div>
+                                        <div class="text-xs text-gray-400">Dokumen</div>
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
 
                     </div>
@@ -503,7 +459,7 @@
                         </div>
 
                         <span class="font-semibold text-gray-800">
-                            142
+                            {{ $dokumenLengkap ?? 0 }}
                         </span>
 
                     </div>
@@ -522,7 +478,7 @@
                         </div>
 
                         <span class="font-semibold text-gray-800">
-                            25
+                            {{ $dokumenDiproses ?? 0 }}
                         </span>
 
                     </div>
@@ -539,9 +495,8 @@
                             </span>
 
                         </div>
-
                         <span class="font-semibold text-gray-800">
-                            17
+                            {{ $dokumenPerluPeriksa ?? 0 }}
                         </span>
 
                     </div>
@@ -585,7 +540,7 @@
 
                 <!-- PETI KEMAS -->
 
-                <a href="#"
+                     <a href="{{ route('peti-kemas.index') }}"
                    class="group p-5 rounded-2xl
                           border border-blue-100
                           bg-blue-50
@@ -634,7 +589,7 @@
 
                 <!-- TRIP -->
 
-                <a href="#"
+                     <a href="{{ route('trip.index') }}"
                    class="group p-5 rounded-2xl
                           border border-green-100
                           bg-green-50
@@ -683,7 +638,7 @@
 
                 <!-- DOKUMEN -->
 
-                <a href="#"
+                     <a href="{{ route('dokumen.index') }}"
                    class="group p-5 rounded-2xl
                           border border-orange-100
                           bg-orange-50
@@ -732,7 +687,7 @@
 
                 <!-- LAPORAN -->
 
-                <a href="#"
+                     <a href="{{ route('laporan.index') }}"
                    class="group p-5 rounded-2xl
                           border border-purple-100
                           bg-purple-50
@@ -781,7 +736,7 @@
 
                 <!-- TRACKING -->
 
-                <a href="#"
+                     <a href="{{ route('tracking.index') }}"
                    class="group p-5 rounded-2xl
                           border border-cyan-100
                           bg-cyan-50
@@ -832,7 +787,7 @@
 
                 <!-- AKUN -->
 
-                <a href="#"
+                     <a href="{{ route('profile.edit') }}"
                    class="group p-5 rounded-2xl
                           border border-pink-100
                           bg-pink-50
@@ -882,10 +837,7 @@
             </div>
 
         </div>
-
-
         <!-- FOOTER DASHBOARD -->
-
         <div class="text-center mt-7">
 
             <p class="text-xs text-gray-400">
@@ -898,6 +850,73 @@
     </div>
 
 </div>
-```
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        (function(){
+            const labels = @json($labels);
+            const petiData = @json($petiKemasSeries);
+            const tripData = @json($tripSeries);
 
+            // Operational line chart
+            const ctx = document.getElementById('opsChart');
+            if (ctx) {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Peti Kemas',
+                                data: petiData,
+                                borderColor: '#4f46e5',
+                                backgroundColor: 'rgba(79,70,229,0.06)',
+                                tension: 0.3,
+                                fill: false,
+                                pointRadius: 4,
+                            },
+                            {
+                                label: 'Trip',
+                                data: tripData,
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16,185,129,0.06)',
+                                tension: 0.3,
+                                fill: false,
+                                pointRadius: 4,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: { grid: { display: false } },
+                            y: { grid: { color: '#e6e9ef' }, beginAtZero: true }
+                        }
+                    }
+                });
+            }
+
+            // Dokumen donut
+            const dokCtx = document.getElementById('dokumenDonut');
+            if (dokCtx) {
+                const dokData = [@json($dokumenLengkap), @json($dokumenDiproses), @json($dokumenPerluPeriksa)];
+                new Chart(dokCtx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Lengkap','Diproses','Perlu Pemeriksaan'],
+                        datasets: [{ data: dokData, backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'] }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            }
+        })();
+    </script>
 </x-app-layout>

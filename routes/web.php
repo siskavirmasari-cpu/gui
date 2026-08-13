@@ -35,7 +35,7 @@ Route::get('/login/pimpinan', [CustomAuthController::class, 'showPimpinanLogin']
 Route::post('/login/pimpinan', [CustomAuthController::class, 'loginPimpinan']);
 
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-
+Route::get('/dokumen-pimpinan', [AdminController::class, 'dokumenPimpinan'])->name('dokumen.pimpinan');
 
 Route::middleware(['auth', 'role:admin,pimpinan,operasional'])->group(function () {
     Route::resource('peti-kemas', PetiKemasController::class);

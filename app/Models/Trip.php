@@ -27,6 +27,10 @@ class Trip extends Model
         'status_perjalanan',
     ];
 
+    protected $casts = [
+        'tanggal_trip' => 'date',
+    ];
+
     /**
      * Relasi balik ke PetiKemas (Setiap trip terhubung dengan satu Peti Kemas)
      */

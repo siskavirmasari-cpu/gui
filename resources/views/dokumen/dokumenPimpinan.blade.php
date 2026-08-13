@@ -20,6 +20,53 @@
                 </a>
             </div>
 
+            <!-- Form Upload Dokumen Data Barang -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl p-6 mb-8 border border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">+ Upload Dokumen untuk Data Barang</h3>
+                
+                <form action="{{ route('dokumen.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <!-- Pilih Barang -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Pilih Data Barang (Import / Export)</label>
+                            <select name="barang_id" class="w-full text-sm border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring-red-500" required>
+                                <option value="">-- Pilih Barang --</option>
+                                @foreach($barangs as $item)
+                                    <option value="{{ $item->id }}">[{{ $item->jenis_kegiatan }}] {{ $item->nama_barang }} (BL: {{ $item->nomor_bl_awb }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Jenis Dokumen Sesuai Spesifikasi -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Jenis Dokumen Berkas</label>
+                            <select name="jenis_dokumen" class="w-full text-sm border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring-red-500" required>
+                                <option value="">-- Pilih Jenis Dokumen --</option>
+                                <option value="Bill of Lading (B/L)">Bill of Lading (B/L)</option>
+                                <option value="Invoice">Invoice</option>
+                                <option value="Packing List">Packing List</option>
+                                <option value="PIB / PEB">PIB / PEB</option>
+                                <option value="Surat Jalan">Surat Jalan</option>
+                                <option value="Dokumen Bea Cukai">Dokumen Bea Cukai</option>
+                                <option value="Foto Container">Foto Container</option>
+                            </select>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">File Berkas (PDF / Foto)</label>
+                            <input type="file" name="file_dokumen" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100" required>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg text-sm font-semibold shadow transition">
+                            Upload Dokumen Barang
+                        </button>
+                    </div>
+                </form>
+            </div>
 
             <!-- Tabel Daftar Dokumen Data Barang -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl p-6 border border-gray-100">

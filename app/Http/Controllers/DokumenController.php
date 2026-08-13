@@ -11,7 +11,7 @@ class DokumenController extends Controller
 {
     public function index()
     {
-        $dokumens = Dokumen::with('barang')->latest()->get();
+        $dokumens = Dokumen::with(['barang', 'petiKemas', 'trip'])->latest()->get();
         $barangs = Barang::all();
         return view('dokumen.index', compact('dokumens', 'barangs'));
     }
@@ -45,8 +45,12 @@ class DokumenController extends Controller
             $dokumen->barang_id = $request->barang_id;
         }
 
-        if (Schema::hasColumn('dokumens', 'peti_kemas_id')) {
-            $dokumen->peti_kemas_id = $request->barang_id;
+        if (Schema::hasColumn('dokumens', 'peti_kemas_id') && $request->filled('peti_kemas_id')) {
+            $dokumen->peti_kemas_id = $request->peti_kemas_id;
+        }
+
+        if (Schema::hasColumn('dokumens', 'trip_id') && $request->filled('trip_id')) {
+            $dokumen->trip_id = $request->trip_id;
         }
 
         if (Schema::hasColumn('dokumens', 'jenis_dokumen')) {
@@ -101,7 +105,7 @@ class DokumenController extends Controller
 
     public function tracking()
     {
-        $dokumens = Dokumen::with('barang')->latest()->get();
+        $dokumens = Dokumen::with(['barang', 'petiKemas', 'trip'])->latest()->get();
         return view('dokumen.tracking', compact('dokumens'));
     }
 

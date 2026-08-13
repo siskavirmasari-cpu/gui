@@ -7,13 +7,55 @@ use App\Models\PetiKemas;
 use App\Models\Barang;
 use App\Models\Trip;
 use App\Models\Dokumen;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
+    public function dokumenPimpinan()
+    {
+        $dokumens = \App\Models\Dokumen::with('barang')->latest()->get();
+        $barangs = \App\Models\Barang::all();
+        return view('dokumen.dokumenPimpinan', compact('dokumens', 'barangs'));
+    }
     // Halaman Dashboard Utama (Akses Admin & Pimpinan)
     public function dashboard()
     {
-        return view('dashboard');
+        // summary counts
+        $totalPetiKemas = PetiKemas::count();
+        $totalTrip = Trip::count();
+        $totalUsers = \App\Models\User::count();
+        $rolesCount = \App\Models\User::distinct('role')->count('role');
+
+        // timeseries for last 7 days (labels + counts)
+        $labels = [];
+        $petiKemasSeries = [];
+        $tripSeries = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $d = Carbon::today()->subDays($i);
+            $labels[] = $d->isoFormat('dd'); // 2-letter day name
+            $petiKemasSeries[] = PetiKemas::whereDate('created_at', $d->toDateString())->count();
+            $tripSeries[] = Trip::whereDate('created_at', $d->toDateString())->count();
+        }
+
+        // dokumen status breakdown
+        $dokumenLengkap = Dokumen::whereIn('status_verifikasi', ['Disetujui', 'Dokumen Lengkap'])->count();
+        $dokumenDiproses = Dokumen::whereIn('status_verifikasi', ['Menunggu Verifikasi', 'Diproses'])->count();
+        $dokumenPerluPeriksa = Dokumen::whereIn('status_verifikasi', ['Perlu Pemeriksaan', 'Ditolak'])->count();
+        $totalDokumen = Dokumen::count();
+
+        return view('dashboard', compact(
+            'totalPetiKemas',
+            'totalTrip',
+            'totalUsers',
+            'rolesCount',
+            'labels',
+            'petiKemasSeries',
+            'tripSeries',
+            'dokumenLengkap',
+            'dokumenDiproses',
+            'dokumenPerluPeriksa',
+            'totalDokumen'
+        ));
     }
 
     // Halaman Laporan Operasional / Dashboard Manajemen
@@ -53,3 +95,4 @@ class AdminController extends Controller
         )); 
     }
 }
+

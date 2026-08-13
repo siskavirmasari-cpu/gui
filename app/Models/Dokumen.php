@@ -15,6 +15,7 @@ class Dokumen extends Model
     protected $fillable = [
         'barang_id',
         'peti_kemas_id',
+        'trip_id',
         'jenis_dokumen',
         'file_dokumen',
         'status_verifikasi'
@@ -23,5 +24,15 @@ class Dokumen extends Model
     public function barang()
     {
         return $this->belongsTo(Barang::class, 'barang_id');
+    }
+
+    public function petiKemas()
+    {
+        return $this->belongsTo(PetiKemas::class, 'peti_kemas_id');
+    }
+
+    public function trip()
+    {
+        return $this->belongsTo(Trip::class, 'trip_id');
     }
 }
