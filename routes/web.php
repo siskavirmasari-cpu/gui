@@ -9,6 +9,8 @@ use App\Http\Controllers\TripController;
 use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\CustomAuthController;
+use App\Http\Controllers\FormatDokumenController;
+use App\Models\Barang;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +57,39 @@ Route::middleware(['auth', 'role:admin,pimpinan,operasional'])->group(function (
     Route::delete('/dokumen/{id}', [DokumenController::class, 'destroy'])->name('dokumen.destroy');
     Route::patch('/dokumen/verifikasi/{id}', [DokumenController::class, 'verifikasi'])->name('dokumen.verifikasi');
     Route::get('/tracking-dokumen', [DokumenController::class, 'tracking'])->name('tracking.index');
+});
+
+Route::middleware(['auth', 'role:admin,pimpinan'])->group(function () {
+    Route::get('/format', [FormatDokumenController::class, 'index'])->name('format.index');
+    Route::post('/format', [FormatDokumenController::class, 'store'])->name('format.store');
+
+    // Dynamic routes untuk setiap format
+    Route::get('/format/bill', [FormatDokumenController::class, 'showBill'])->name('format.bill');
+    Route::post('/format/bill', [FormatDokumenController::class, 'saveBill'])->name('format.bill.save');
+    
+    Route::get('/format/invoice', [FormatDokumenController::class, 'showInvoice'])->name('format.invoice');
+    Route::post('/format/invoice', [FormatDokumenController::class, 'saveInvoice'])->name('format.invoice.save');
+    
+    Route::get('/format/packing', [FormatDokumenController::class, 'showPacking'])->name('format.packing');
+    Route::post('/format/packing', [FormatDokumenController::class, 'savePacking'])->name('format.packing.save');
+    
+    Route::get('/format/pib', [FormatDokumenController::class, 'showPib'])->name('format.pib');
+    Route::post('/format/pib', [FormatDokumenController::class, 'savePib'])->name('format.pib.save');
+    
+    Route::get('/format/peb', [FormatDokumenController::class, 'showPeb'])->name('format.peb');
+    Route::post('/format/peb', [FormatDokumenController::class, 'savePeb'])->name('format.peb.save');
+    
+    Route::get('/format/dokumen-bea-cukai', [FormatDokumenController::class, 'showDokumenBea'])->name('format.dokumenBea');
+    Route::post('/format/dokumen-bea-cukai', [FormatDokumenController::class, 'saveDokumenBea'])->name('format.dokumenBea.save');
+    
+    Route::get('/format/foto-container', [FormatDokumenController::class, 'showFotoContainer'])->name('format.fotoContainer');
+    Route::post('/format/foto-container', [FormatDokumenController::class, 'saveFotoContainer'])->name('format.fotoContainer.save');
+    
+    Route::get('/format/surat-jalan', [FormatDokumenController::class, 'showSuratJalan'])->name('format.suratJalan');
+    Route::post('/format/surat-jalan', [FormatDokumenController::class, 'saveSuratJalan'])->name('format.suratJalan.save');
+    
+    // View detail format
+    Route::get('/format/view/{id}', [FormatDokumenController::class, 'viewFormat'])->name('format.view');
 });
 
 require __DIR__.'/auth.php';
